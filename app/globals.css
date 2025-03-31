@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@tailwind utilities;
+
+@layer utilities {
+  .container-x-padding {
+    @apply px-5 sm:px-10 md:px-10 lg:px-20 xl:px-20;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -52,7 +60,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.13 0.028 261.692);
   /* --primary: oklch(0.21 0.034 264.665); */
-  --primary: oklab(68.78% 0.11 0.08);
+  --primary: oklch(31.18% 0.0529 129.56);
   --primary-foreground: oklch(0.985 0.002 247.839);
   /* --secondary: oklch(0.967 0.003 264.542); */
   --secondary: oklch(72.18% 0.0628 163.1);
