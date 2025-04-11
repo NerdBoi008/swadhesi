@@ -4,9 +4,11 @@ export type Product = {
     price: number;
     discount: number;
     stock: number;
-    sizes: ('S' | 'M' | 'L')[];  // Kids' clothing sizes
+    sizes: ProductSizes[];  // Kids' clothing sizes
     thumbnailImage: string;
     otherImages: string[];
     description: string;
     category: string;
 };
+
+export type ProductSizes = 'S' | 'M' | 'L'

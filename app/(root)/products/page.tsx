@@ -1,10 +1,262 @@
-import React from 'react'
+'use client'
+
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import BreadCrumbLinkCustom from '@/components/common/BreadCrumbLinkCustom'
+import { Product, ProductSizes } from '@/types'
+import useDataStore from '@/lib/store/dataStore'
+import ProductCard from '@/components/common/ProductCard'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { PriceFilter } from '@/components/common/PriceFilter'
+import { StockFilter, StockStatus } from '@/components/common/StockFilter'
+import { SizeFilter } from '@/components/common/SizeFilter'
+import { Button } from '@/components/ui/button'
 
 const ProductPage = () => {
+
+  const { products: productsApi, fetchProducts } = useDataStore();
+  const [originalProducts, setoriginalProducts] = useState<Product[] | null>(null);
+
+  // --- State for Filter Criteria ---
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  // Initialize maxPrice high, it will adjust when products load
+  const [maxPrice, setMaxPrice] = useState<number>(Infinity);
+  const [stockStatus, setStockStatus] = useState<StockStatus>('all');
+  // --- State for the final list to display ---
+  const [filteredProducts, setFilteredProducts] = useState(originalProducts);
+  // --- State for Resetting Child Components ---
+  const [filterResetKey, setFilterResetKey] = useState<number>(0);
+
+
+  // --- Effect to fetch and set base data & initial filter values ---
+  useEffect(() => {
+    if (!productsApi && fetchProducts) {
+      fetchProducts();
+    }
+
+    if (productsApi) {
+      setoriginalProducts(productsApi);
+
+      // Calculate initial price bonds only when products load/change
+      if (productsApi.length > 0) {
+        const prices = productsApi.map(p => p.price);
+        const initialMin = 0; // Or can be changed to Math.min(...prices) if > 0 needed
+        const initialMax = Math.max(...prices);
+        
+        setMinPrice(initialMin);
+        setMaxPrice(initialMax);
+
+        setFilteredProducts(productsApi);
+      } else {
+        setMinPrice(0);
+        setMaxPrice(0);
+        setFilteredProducts([]);
+      }
+      // Reset other filters to default when data reloads? Optional.
+      // setSelectedSizes([]);
+      // setStockStatus('all');
+    }
+    
+  }, [productsApi, fetchProducts]);
+
+  // --- Calculate price bounds for the PriceFilter component ---
+  const priceBounds = useMemo(() => {
+    if (!originalProducts || originalProducts.length === 0) {
+      return { min: 0, max: 0 };
+    }
+    const prices = originalProducts.map(p => p.price);
+    return {
+      min: 0,
+      max: Math.max(...prices)
+    }
+  }, [originalProducts]);
+
+  const handleClearFilters = useCallback(() => {
+    setSelectedSizes([]);
+    setStockStatus('all');
+
+    // Reset price to the actual bounds derived from current original products
+    const bounds = priceBounds; // Use the memoized bounds
+    setMinPrice(bounds.min);
+    setMaxPrice(bounds.max);
+
+    // Increment the key to force remount of filter components
+    setFilterResetKey(prevKey => prevKey + 1);
+
+  }, [priceBounds]);
+  
+  // --- Callback for SizeFilter ---
+  // Memoized to prevent issues in SizeFilter's useEffect
+  const handleSizeChange = useCallback((sizes: string[]) => {
+    setSelectedSizes(sizes);
+  }, []);
+  
+  // --- Callback for PriceFilter ---
+  // Memoized to prevent issues in PriceFilter's useEffect
+  const handlePriceRangeChange = useCallback((min: number, max: number) => {
+    setMinPrice(min);
+    setMaxPrice(max);
+  }, []);
+
+  // Callback for StockFilter
+  const handleStockStatusChange = useCallback((status: StockStatus) => {
+    setStockStatus(status);
+  }, []);
+  
+
+  // --- Central Effect for Filtering ---
+  // This runs whenever the original list or any filter criteria changes
+  useEffect(() => {
+    if (!originalProducts) {
+      setFilteredProducts(null); // Set to null if original data isn't ready
+      return;
+    }
+
+    let currentFiltered: Product[] = [...originalProducts]; // Start with the full original list
+
+    // Apply size filter
+    if (selectedSizes.length > 0) {
+      currentFiltered = currentFiltered.filter(p =>
+        Array.isArray(p.sizes) && selectedSizes.some(size => p.sizes.includes(size as ProductSizes))
+      );
+    }
+
+    // Apply price filter
+    // Ensure maxPrice is treated correctly (it might be Infinity initially)
+    const effectiveMaxPrice = maxPrice === Infinity ? Number.MAX_SAFE_INTEGER : maxPrice;
+    currentFiltered = currentFiltered.filter(p =>
+      p.price >= minPrice && p.price <= effectiveMaxPrice
+    );
+
+    // Apply stock filter
+    if (stockStatus === 'inStock') {
+      currentFiltered = currentFiltered.filter(p => typeof p.stock === 'number' && p.stock > 0);
+    } else if (stockStatus === 'outOfStock') {
+      currentFiltered = currentFiltered.filter(p => typeof p.stock === 'number' && p.stock < 0);
+    }
+
+    setFilteredProducts(currentFiltered); // Update the final display list
+    
+  }, [originalProducts, selectedSizes, minPrice, maxPrice, stockStatus]);
+  
+
   return (
-      <div className='flex flex-col items-center justify-center flex-1 py-2'>
-          ProductPage
-      </div>
+    <main className='flex-1 pt-8 container-x-padding space-y-5'>
+
+      <h1 className='text-center text-4xl font-bold font-secondary'>All Products</h1>
+      
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadCrumbLinkCustom href="/">Home</BreadCrumbLinkCustom>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>All Products</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      {/* Main section */}
+      <section className='flex gap-5'>
+        {/* filter section */}
+        <aside className='w-96 sticky top-[140px] h-[calc(100vh-140px)] overflow-y-auto'>
+          <div className='flex justify-between items-center'>
+            <p className='text-lg font-semibold'>Filter:</p>
+            <Button
+              variant={'link'} size={'sm'}
+              onClick={handleClearFilters}
+            >
+              Clear All
+            </Button>
+          </div>
+          <Accordion type='multiple'>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Size</AccordionTrigger>
+              <AccordionContent>
+                <SizeFilter
+                  key={`size-${filterResetKey}`}
+                  onSizeChange={handleSizeChange}
+                />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Price</AccordionTrigger>
+              <AccordionContent>
+                {filteredProducts && (
+                  <PriceFilter
+                    key={`price-${filterResetKey}`}
+                    minPriceBound={priceBounds.min || 0}
+                    maxPriceBound={priceBounds.max || 0}
+                    onPriceRangeChange={handlePriceRangeChange}
+                  />
+                )}
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Availability</AccordionTrigger>
+              <AccordionContent>
+                {originalProducts && (
+                  <StockFilter
+                    key={`stock-${filterResetKey}`}
+                    originalProducts={originalProducts}
+                    onStockStatusChange={handleStockStatusChange}
+                  />
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+        </aside>
+
+        {/* Products display section */}
+        <aside className='w-full'>
+          <header className='flex items-center pb-5 justify-end'>
+            <p className='text-sm font-semibold'>{filteredProducts ?  filteredProducts.length : 0} Products</p>
+          </header>
+
+          {/* Products grid */}
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-y-6 gap-x-3'>
+            {filteredProducts ? (
+              filteredProducts.map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category }: Product) => (
+                <ProductCard
+                  key={id}
+                  className="w-full"
+                  id={id}
+                  name={name}
+                  price={price}
+                  discount={discount}
+                  stock={stock}
+                  sizes={sizes}
+                  thumbnailImage={thumbnailImage}
+                  otherImages={otherImages}
+                  description={description}
+                  category={category}
+                />
+              ))
+            ) : (
+              Array.from({ length: 8 }).map((_, index) => (
+                <div key={index} className="border-2 h-44 lg:h-60 2xl:h-96 animate-pulse bg-gray-100 w-full m-8"/>
+              ))
+            )}
+          </div>
+        </aside>
+      </section>
+    </main>
   )
 }
 
