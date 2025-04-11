@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { mulish } from "./fonts";
+import { fontPrimary } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Swadhesi",
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${mulish.className} antialiased`}
+        className={`${fontPrimary.className} antialiased`}
       >
         {children}
       </body>
