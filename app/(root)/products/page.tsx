@@ -22,11 +22,24 @@ import { PriceFilter } from '@/components/common/PriceFilter'
 import { StockFilter, StockStatus } from '@/components/common/StockFilter'
 import { SizeFilter } from '@/components/common/SizeFilter'
 import { Button } from '@/components/ui/button'
+import { ListFilterPlusIcon } from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+
 
 const ProductPage = () => {
 
   const { products: productsApi, fetchProducts } = useDataStore();
   const [originalProducts, setoriginalProducts] = useState<Product[] | null>(null);
+
+  const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
 
   // --- State for Filter Criteria ---
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -172,12 +185,13 @@ const ProductPage = () => {
       {/* Main section */}
       <section className='flex gap-5'>
         {/* filter section */}
-        <aside className='w-96 sticky top-[140px] h-[calc(100vh-140px)] overflow-y-auto'>
+        <aside className='w-80 sticky top-[140px] h-[calc(100vh-140px)] overflow-y-auto hidden md:block'>
           <div className='flex justify-between items-center'>
             <p className='text-lg font-semibold'>Filter:</p>
             <Button
               variant={'link'} size={'sm'}
               onClick={handleClearFilters}
+              className='cursor-pointer'
             >
               Clear All
             </Button>
@@ -225,12 +239,86 @@ const ProductPage = () => {
 
         {/* Products display section */}
         <aside className='w-full'>
-          <header className='flex items-center pb-5 justify-end'>
+          <header className='flex items-center pb-5 justify-between md:justify-end'>
+            <Sheet open={isSheetOpen} onOpenChange={(open) => setIsSheetOpen(open)}>
+              <SheetTrigger asChild>
+                <Button
+                  variant={'outline'}
+                  className='font-bold cursor-pointer md:hidden'
+                >
+                  <ListFilterPlusIcon />
+                  Filter
+                </Button>
+              </SheetTrigger>
+              <SheetContent side='left' className='p-5'>
+
+                <SheetHeader className='hidden'>
+                  <SheetTitle>Filter</SheetTitle>
+                  <SheetDescription>
+                    Filter for products.
+                  </SheetDescription>
+                </SheetHeader>
+
+                <h1 className='font-semibold text-lg'>Filter</h1>
+                <Accordion type='multiple'>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>Size</AccordionTrigger>
+                    <AccordionContent>
+                      <SizeFilter
+                        key={`size-${filterResetKey}`}
+                        onSizeChange={handleSizeChange}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger>Price</AccordionTrigger>
+                    <AccordionContent>
+                      {filteredProducts && (
+                        <PriceFilter
+                          key={`price-${filterResetKey}`}
+                          minPriceBound={priceBounds.min || 0}
+                          maxPriceBound={priceBounds.max || 0}
+                          onPriceRangeChange={handlePriceRangeChange}
+                        />
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger>Availability</AccordionTrigger>
+                    <AccordionContent>
+                      {originalProducts && (
+                        <StockFilter
+                          key={`stock-${filterResetKey}`}
+                          originalProducts={originalProducts}
+                          onStockStatusChange={handleStockStatusChange}
+                        />
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+                <SheetFooter>
+                <Button
+                    variant={'default'} size={'sm'}
+                    className='cursor-pointer'
+                    onClick={() => {
+                      handleClearFilters();
+                      setIsSheetOpen(!isSheetOpen);
+                    }}
+                >
+                  Clear All
+                </Button>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+
+            
             <p className='text-sm font-semibold'>{filteredProducts ?  filteredProducts.length : 0} Products</p>
           </header>
 
           {/* Products grid */}
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-y-6 gap-x-3'>
+          <div className='grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center gap-y-6 gap-x-3'>
             {filteredProducts ? (
               filteredProducts.map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category }: Product) => (
                 <ProductCard

@@ -7,7 +7,14 @@ const Credits = () => {
       <span className='text-xs sm:text-sm text-gray-400'>
         A project by {' '}
         <strong>TeamNextCraft</strong> • {' '}
-        <Link href={'https://github.com/orgs/TeamNextCraft/teams/pixelpair'} className='underline underline-offset-2'>View our Github</Link>
+        <Link
+          rel='Developers Team Link'
+          href={'https://github.com/orgs/TeamNextCraft'}
+          target='_blank'
+          className='underline underline-offset-2'
+        >
+          View our Github
+        </Link>
       </span>
     </section>
   )
