@@ -1,12 +1,21 @@
 'use client'
 
-import { SearchIcon, ShoppingBagIcon } from 'lucide-react'
+import { LogOutIcon, SearchIcon, ShoppingBagIcon, UserRoundIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Separator } from '../ui/separator'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -14,11 +23,12 @@ const navLinks = [
   { name: 'Products', href: '/products' },
   { name: 'Tops', href: '/tops' },
   { name: 'Dresses', href: '/dresses' },
-  { name: 'Co-Ordrs', href: '#' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 const Navbar = () => {
   
+  const router = useRouter();
   const pathname = usePathname();
 
   return (
@@ -33,11 +43,31 @@ const Navbar = () => {
           className="w-fit h-10"
         />
         <div className='flex items-center space-x-4'>
-          <ShoppingBagIcon/>
-          <Avatar className='hidden sm:block'>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <ShoppingBagIcon />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className='hidden sm:block cursor-pointer'>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='font-semibold'>
+
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem className='cursor-pointer' onClick={() => {router.push('/')}}>
+                <UserRoundIcon/>
+                Profile
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className='cursor-pointer' onClick={() => {router.push('/login')}}>
+                <LogOutIcon/>
+                Log-In/Out
+              </DropdownMenuItem>
+
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <Separator decorative/>
