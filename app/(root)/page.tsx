@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/common/ProductCard";
 import CustomButton from "@/components/common/CustomButton";
-import { ArrowUpRightIcon} from "lucide-react";
+import { ArrowUpRightIcon, BicepsFlexedIcon, CloudyIcon, TreesIcon, } from "lucide-react";
 import Link from "next/link";
 import { TestimonialsSection } from "@/components/common/TestimonialsSection";
 import { z } from "zod"
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { instagramHandle, instagramImgSrcs } from "@/lib/constant";
+import { CoronaVirusIcon } from "@/public/icons/corona-virus-icon";
 
 const subscriptionformSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -141,12 +142,13 @@ export default function Home() {
         {/* Products Heading */}
         <div className="text-center">
           <h2 className="text-4xl font-bold font-secondary">New Arrivals</h2>
+          <p className="text-sm text-muted-foreground">Little outfits, big adventures!</p>
         </div>
         
         {/* New Arrived Products */}
         <div className="flex justify-center items-center flex-col md:flex-row gap-4 w-full">
           {products ? (
-            products.slice(0, 3).map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category }: Product) => (
+            products.slice(0, 3).map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category, recommendedProducts }: Product) => (
               <ProductCard
                 key={id}
                 className="w-full"
@@ -160,6 +162,7 @@ export default function Home() {
                 otherImages={otherImages}
                 description={description}
                 category={category}
+                recommendedProducts={recommendedProducts}
               />
             ))
           ) : (
@@ -170,18 +173,10 @@ export default function Home() {
         </div>
       </section>
 
-      <CustomButton
-        className="w-auto mx-auto mt-4 flex gap-2 group font-bold"
-        onClick={() => {
-
-        }}
-      >
-        View All Products
-        <ArrowUpRightIcon className="hidden group-hover:block size-5"/>
-      </CustomButton>
+      
 
       {/* Discover section */}
-      <section className="flex h-[750px]">
+      <section className="flex h-[750px] mt-8">
         <div className="relative flex-1">
           <Image
             src={"/cdn-imgs/hero_img_7.jpg"}
@@ -193,7 +188,15 @@ export default function Home() {
         <div className="flex-1 max-w-96 text-center flex items-center gap-4 flex-col justify-center p-4">
           <h1 className="text-3xl font-semibold">Heading</h1>
           <p>Content of this paragraph. which you should ask client to put.</p>
-          <Link href={"/"} className="hover:underline hover:font-semibold">Discover now</Link>
+          <CustomButton
+            className="w-auto mx-auto mt-4 flex gap-2 group font-bold"
+            onClick={() => {
+
+            }}
+          >
+            View All Products
+            <ArrowUpRightIcon className="hidden group-hover:block size-5"/>
+          </CustomButton>
         </div>
         <div className="relative flex-1">
           <Image
@@ -278,6 +281,29 @@ export default function Home() {
         
       </section>
 
+      {/* Product characteristics section */}
+      <section className="container-x-padding flex items-center justify-evenly font-secondary text-xl font-bold tracking-wide uppercase select-none text-primary">
+        <div className="flex flex-col gap-3 items-center">
+          <CloudyIcon className="size-10"/>
+          <p>Softer</p>
+        </div>
+
+        <div className="flex flex-col gap-3 items-center">
+          <BicepsFlexedIcon className="size-10"/>
+          <p>Sustainable</p>
+        </div>
+
+        <div className="flex flex-col gap-3 items-center">
+          <TreesIcon className="size-10"/>
+          <p>Natural</p>
+        </div>
+
+        <div className="flex flex-col gap-3 items-center">
+          <CoronaVirusIcon className="size-10"/>
+          <p>Anti-Microbial</p>
+        </div>
+      </section>
+      
       {/* Discount Contact section */}
       <section className="relative flex justify-center">
         <Image

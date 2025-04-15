@@ -263,12 +263,12 @@ const AboutPage = () => {
       <section className='container-x-padding flex flex-col justify-center items-center'>
         <h1 className='text-4xl mt-6 font-secondary'>FAQs</h1>
         <p className='text-sm mt-2 text-muted-foreground'>Below are some of the common questions</p>
-        <div className=' lg:min-w-1/2 mt-5'>
-          <Accordion type="single" collapsible className='flex-1'>
+        <div className='w-full sm:w-sm md:w-md lg:w-lg xl:w-xl 2xl:w-2xl'>
+          <Accordion type="single" collapsible className=''>
             {faqQuestions.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`} >
                 <AccordionTrigger>{item.question}</AccordionTrigger>
-                <AccordionContent>{item.question}</AccordionContent>
+                <AccordionContent>{item.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

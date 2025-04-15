@@ -9,6 +9,7 @@ export type Product = {
     otherImages: string[];
     description: string;
     category: string;
+    recommendedProducts: string[];
 };
 
 export type ProductSizes = 'S' | 'M' | 'L'

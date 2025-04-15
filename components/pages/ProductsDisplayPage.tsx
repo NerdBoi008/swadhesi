@@ -9,7 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import BreadCrumbLinkCustom from '@/components/common/BreadCrumbLinkCustom'
-import { Product, ProductSizes } from '@/types'
+import { PageRoutes, Product, ProductSizes } from '@/types'
 import useDataStore from '@/lib/store/dataStore'
 import ProductCard from '@/components/common/ProductCard'
 import {
@@ -33,8 +33,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
+interface ProductsDisplayPageProps {
+    pageHeading: PageRoutes;
+}
 
-const ProductPage = () => {
+const pageHeadings: Record<PageRoutes, string> = {
+    all: "All Products",
+    dresses: "Dresses",
+    tops: "Tops",
+};
+
+const ProductsDisplayPage = ({ 
+    pageHeading
+}: ProductsDisplayPageProps) => {
 
   const { products: productsApi, fetchProducts } = useDataStore();
   const [originalProducts, setoriginalProducts] = useState<Product[] | null>(null);
@@ -60,7 +71,8 @@ const ProductPage = () => {
     }
 
     if (productsApi) {
-      setoriginalProducts(productsApi);
+      // setoriginalProducts(productsApi);
+      setoriginalProducts((pageHeading === 'all') ? productsApi : productsApi.filter(p => p.category === pageHeading));
 
       // Calculate initial price bonds only when products load/change
       if (productsApi.length > 0) {
@@ -82,7 +94,7 @@ const ProductPage = () => {
       // setStockStatus('all');
     }
     
-  }, [productsApi, fetchProducts]);
+  }, [productsApi, fetchProducts, pageHeading]);
 
   // --- Calculate price bounds for the PriceFilter component ---
   const priceBounds = useMemo(() => {
@@ -168,7 +180,7 @@ const ProductPage = () => {
   return (
     <main className='flex-1 pt-8 container-x-padding space-y-5'>
 
-      <h1 className='text-center text-4xl font-bold font-secondary'>All Products</h1>
+      <h1 className='text-center text-4xl font-bold font-secondary'>{pageHeadings[pageHeading]}</h1>
       
       <Breadcrumb>
         <BreadcrumbList>
@@ -177,7 +189,7 @@ const ProductPage = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>All Products</BreadcrumbPage>
+            <BreadcrumbPage>{pageHeadings[pageHeading]}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -320,7 +332,7 @@ const ProductPage = () => {
           {/* Products grid */}
           <div className='grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center gap-y-6 gap-x-3'>
             {filteredProducts ? (
-              filteredProducts.map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category }: Product) => (
+              filteredProducts.map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category, recommendedProducts}: Product) => (
                 <ProductCard
                   key={id}
                   className="w-full"
@@ -334,6 +346,7 @@ const ProductPage = () => {
                   otherImages={otherImages}
                   description={description}
                   category={category}
+                  recommendedProducts={recommendedProducts}
                 />
               ))
             ) : (
@@ -348,4 +361,4 @@ const ProductPage = () => {
   )
 }
 
-export default ProductPage
+export default ProductsDisplayPage

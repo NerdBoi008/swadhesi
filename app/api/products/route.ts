@@ -11,7 +11,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/dino-tshirt-thumb.jpg',
     otherImages: ['/images/products/dino-tshirt-1.jpg', '/images/products/dino-tshirt-2.jpg'],
     description: 'Colorful dinosaur print cotton t-shirt for kids. 100% organic cotton.',
-    category: 'T-Shirts'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-2',
@@ -23,7 +24,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/unicorn-hoodie-thumb.jpg',
     otherImages: ['/images/products/unicorn-hoodie-1.jpg', '/images/products/unicorn-hoodie-2.jpg'],
     description: 'Soft fleece hoodie with unicorn design. Perfect for chilly days.',
-    category: 'Hoodies'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-3',
@@ -35,7 +37,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/striped-pants-thumb.jpg',
     otherImages: ['/images/products/striped-pants-1.jpg'],
     description: 'Comfortable striped pants with elastic waistband.',
-    category: 'Pants'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-4',
@@ -47,7 +50,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/animal-socks-thumb.jpg',
     otherImages: ['/images/products/animal-socks-1.jpg', '/images/products/animal-socks-2.jpg'],
     description: 'Adorable animal-themed socks pack. Non-slip soles included.',
-    category: 'Accessories'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-5',
@@ -59,7 +63,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/tutu-dress-thumb.jpg',
     otherImages: ['/images/products/tutu-dress-1.jpg', '/images/products/tutu-dress-2.jpg'],
     description: 'Fluffy rainbow-colored tutu dress for special occasions. Machine washable.',
-    category: 'Dresses'
+    category: 'dresses',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-6',
@@ -71,7 +76,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/space-pajamas-thumb.jpg',
     otherImages: ['/images/products/space-pajamas-1.jpg'],
     description: 'Comfy cotton pajama set with planets and rockets print.',
-    category: 'Pajamas'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-7',
@@ -83,7 +89,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/denim-overalls-thumb.jpg',
     otherImages: ['/images/products/denim-overalls-1.jpg', '/images/products/denim-overalls-2.jpg'],
     description: 'Durable denim overalls with adjustable straps. Multiple pockets included.',
-    category: 'Overalls'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-8',
@@ -95,7 +102,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/swim-trunks-thumb.jpg',
     otherImages: ['/images/products/swim-trunks-1.jpg'],
     description: 'Quick-dry swim trunks with fun shark design. UPF 50+ protection.',
-    category: 'Swimwear'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-9',
@@ -107,7 +115,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/bunny-beanie-thumb.jpg',
     otherImages: ['/images/products/bunny-beanie-1.jpg'],
     description: 'Warm knit beanie with adorable bunny ears. One size fits most.',
-    category: 'Accessories'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-10',
@@ -119,7 +128,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/superhero-cape-thumb.jpg',
     otherImages: ['/images/products/superhero-cape-1.jpg', '/images/products/superhero-cape-2.jpg'],
     description: 'Playtime superhero set with velcro-attached cape and mask.',
-    category: 'Costumes'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-11',
@@ -131,7 +141,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/bodysuits-thumb.jpg',
     otherImages: ['/images/products/bodysuits-1.jpg'],
     description: 'Softest organic cotton bodysuits for babies. Snap closure at bottom.',
-    category: 'Baby'
+    category: 'tops',
+    recommendedProducts: ['prod-1', 'prod-2']
   },
   {
     id: 'prod-12',
@@ -143,7 +154,8 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/glow-shoes-thumb.jpg',
     otherImages: ['/images/products/glow-shoes-1.jpg', '/images/products/glow-shoes-2.jpg'],
     description: 'Comfortable canvas sneakers that glow in the dark. Non-marking soles.',
-    category: 'Shoes'
+    category: 'tops',
+    recommendedProducts: ['prod-10', 'prod-6']
   },
   {
     id: 'prod-13',
@@ -155,8 +167,74 @@ const mockProducts: Product[] = [
     thumbnailImage: '/images/products/glow-shoes-thumb.jpg',
     otherImages: ['/images/products/glow-shoes-1.jpg', '/images/products/glow-shoes-2.jpg'],
     description: 'Comfortable canvas sneakers that glow in the dark. Non-marking soles.',
-    category: 'Shoes'
+    category: 'tops',
+    recommendedProducts: ['prod-10', 'prod-6']
   },
+  {
+    id: 'prod-14',
+    name: 'Fairy Princess Dress',
+    price: 310.00,
+    discount: 0.2,
+    stock: 10,
+    sizes: ['S', 'M'],
+    thumbnailImage: '/images/products/fairy-dress-thumb.jpg',
+    otherImages: ['/images/products/fairy-dress-1.jpg'],
+    description: 'Magical fairy dress with glittery wings and floral print.',
+    category: 'dresses',
+    recommendedProducts: ['prod-10', 'prod-6']
+  },
+  {
+    id: 'prod-15',
+    name: 'Polka Dot Peplum Top',
+    price: 180.75,
+    discount: 0.1,
+    stock: 17,
+    sizes: ['S', 'M', 'L'],
+    thumbnailImage: '/images/products/polka-peplum-thumb.jpg',
+    otherImages: ['/images/products/polka-peplum-1.jpg'],
+    description: 'Trendy polka dot peplum top for casual outings.',
+    category: 'tops',
+    recommendedProducts: ['prod-10', 'prod-6']
+  },
+  {
+    id: 'prod-16',
+    name: 'Floral Summer Dress',
+    price: 275.00,
+    discount: 0.15,
+    stock: 13,
+    sizes: ['M', 'L'],
+    thumbnailImage: '/images/products/floral-summer-thumb.jpg',
+    otherImages: ['/images/products/floral-summer-1.jpg', '/images/products/floral-summer-2.jpg'],
+    description: 'Lightweight floral dress perfect for warm days.',
+    category: 'dresses',
+    recommendedProducts: ['prod-10', 'prod-6']
+  },
+  {
+    id: 'prod-17',
+    name: 'Graphic Tee - Robot',
+    price: 160.00,
+    discount: 0.05,
+    stock: 19,
+    sizes: ['S', 'M', 'L'],
+    thumbnailImage: '/images/products/robot-tee-thumb.jpg',
+    otherImages: ['/images/products/robot-tee-1.jpg'],
+    description: 'Fun robot graphic tee made from breathable cotton.',
+    category: 'tops',
+    recommendedProducts: ['prod-10', 'prod-6']
+  },
+  {
+    id: 'prod-18',
+    name: 'Princess Sequin Dress',
+    price: 330.00,
+    discount: 0.1,
+    stock: 6,
+    sizes: ['S', 'M'],
+    thumbnailImage: '/images/products/sequin-dress-thumb.jpg',
+    otherImages: ['/images/products/sequin-dress-1.jpg'],
+    description: 'Sparkly princess dress with sequin details and soft lining.',
+    category: 'dresses',
+    recommendedProducts: ['prod-10', 'prod-6']
+  }
 ];
   
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

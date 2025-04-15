@@ -13,16 +13,21 @@ export const supportAddress = [
     'India'
 ]
 
-export const socialLinks: Array<{
-    social: string
-    link: string
-}> = [
-    { social: 'Facebook', link: 'https://facebook.com' },
-    { social: 'Instagram', link: 'https://instagram.com' },
-    { social: 'Twitter', link: 'https://twitter.com' },
-    { social: 'Pinterest', link: 'https://pinterest.com' },
-    { social: 'LinkedIn', link: 'https://linkedin.com' },
-]
+export const instagramLink: string = 'https://instagram.com';
+
+export const facebookLink: string = 'https://facebook.com';
+
+/* ⚠ Remove this on 20/4/2025 if nothing in code breaks ⚠ */
+// export const socialLinks: Array<{
+//     social: string
+//     link: string
+// }> = [
+//     { social: 'Facebook', link: 'https://facebook.com' },
+//     { social: 'Instagram', link: 'https://instagram.com' },
+//     { social: 'Twitter', link: 'https://twitter.com' },
+//     { social: 'Pinterest', link: 'https://pinterest.com' },
+//     { social: 'LinkedIn', link: 'https://linkedin.com' },
+// ]
 
 export const footerLinks: Array<{
     heading: string
