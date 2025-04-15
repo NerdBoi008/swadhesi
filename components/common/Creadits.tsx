@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -11,9 +12,10 @@ const Credits = () => {
           rel='Developers Team Link'
           href={'https://github.com/orgs/TeamNextCraft'}
           target='_blank'
-          className='underline underline-offset-2'
+          className='underline underline-offset-2 inline-flex gap-1 items-center'
         >
-          View our Github
+          Github
+          <ExternalLinkIcon className='size-3.5'/>
         </Link>
       </span>
     </section>

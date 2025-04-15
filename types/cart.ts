@@ -1,8 +1,9 @@
+import { ProductSizes } from "./product";
+
 export type CartItem = {
     id: string;
     quantity: number;
-    size: 'S' | 'M' | 'L';
-    color: string;
+    size: ProductSizes;
     price: number;
     name: string;
     thumbnailImage: string;

@@ -1,13 +1,14 @@
-import { CartItem } from "@/types";
+import { CartItem, ProductSizes } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type CartStore = {
-    cart: CartItem[];
-    addToCart: (item: CartItem) => void;
-    removeFromCart: (id: string) => void;
-    updateQuantity: (id: string, quantity: number) => void;
-    clearCart: () => void;
+  cart: CartItem[];
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  updateSize: (id: string, size: ProductSizes) => void;
+  clearCart: () => void;
 }
 
 const useCartStore = create(
@@ -54,6 +55,20 @@ const useCartStore = create(
                 ),
               };
             }
+          }),
+        
+        // Update the size of a product in the cart
+        updateSize: (id, size) =>
+          set((state) => {
+            const originalSize = state.cart.find((i) => i.id === id)?.size;
+            if (size !== originalSize) {
+              return {
+                cart: state.cart.map((i) =>
+                  i.id === id ? { ...i, size } : i
+                ),
+              };
+            }
+            return state; // Return the current state if no update is needed
           }),
   
         // Clear the entire cart

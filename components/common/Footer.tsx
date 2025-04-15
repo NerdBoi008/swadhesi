@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { footerLinks, supportEmail, supportPhone } from '@/lib/constant'
+import { facebookLink, footerLinks, instagramLink, supportEmail, supportPhone } from '@/lib/constant'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -12,6 +12,8 @@ import { Separator } from '../ui/separator'
 import Link from 'next/link'
 import { MailIcon, PhoneCallIcon } from 'lucide-react'
 import CustomButton from './CustomButton'
+import { InstagramIcon } from '@/public/icons/instagram-icon'
+import { FacebookIcon } from '@/public/icons/facebook-icon'
 
 export const formSchema = z.object({
   email: z.string().email('Please enter a valid email address').trim(),
@@ -111,6 +113,18 @@ const Footer = () => (
       <div className='flex flex-col gap-4'>
         <h3 className='font-bold'>THE INSIDE SCOOP</h3>
         <SubscriptionForm />
+        <div>
+          {instagramLink && (
+            <Link href={instagramLink}>
+              <InstagramIcon className='size-5 inline mr-4 text-muted-foreground'/>
+            </Link>
+          )}
+          {facebookLink && (
+            <Link href={facebookLink}>
+              <FacebookIcon className='size-5 inline mr-4 text-muted-foreground'/>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
 
