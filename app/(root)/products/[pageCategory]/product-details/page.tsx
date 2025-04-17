@@ -31,7 +31,7 @@ const ProductDetailsPage = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname().split('/')[2];
   const { products: productsApi, fetchProducts } = useDataStore();
-  const { addToCart } = useCartStore();
+  const addToCart  = useCartStore(state => state.addToCart);
   const router = useRouter();
   
   // Get productId or search query from URL

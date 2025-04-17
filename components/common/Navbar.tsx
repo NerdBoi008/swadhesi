@@ -332,10 +332,19 @@ const Navbar = () => {
                 )}
               </div>
               
-              <DrawerFooter>
-                <Button>Submit</Button>
+              <DrawerFooter className='flex flex-row-reverse gap-3'>
+                <Button
+                  className='grow'
+                >
+                  Check out
+                </Button>
                 <DrawerClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button
+                    variant="outline"
+                    className='grow'
+                  >
+                    Cancel
+                  </Button>
                 </DrawerClose>
               </DrawerFooter>
             </DrawerContent>
