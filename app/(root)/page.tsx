@@ -146,7 +146,7 @@ export default function Home() {
         </div>
         
         {/* New Arrived Products */}
-        <div className="flex justify-center items-center flex-col md:flex-row gap-4 w-full">
+        <div className="grid grid-cols-2 md:flex items-center justify-center justify-items-center gap-4 w-full">
           {products ? (
             products.slice(0, 3).map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category, recommendedProducts }: Product) => (
               <ProductCard
@@ -167,16 +167,14 @@ export default function Home() {
             ))
           ) : (
             Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="border-2 h-[640px] animate-pulse bg-gray-100 w-full"/>
+              <div key={index} className="border-2 h-[440px] animate-pulse bg-gray-100 w-full max-w-96"/>
             ))
           )}
         </div>
       </section>
 
-      
-
       {/* Discover section */}
-      <section className="flex h-[750px] mt-8">
+      <section className="flex flex-col md:flex-row h-[750px] mt-8">
         <div className="relative flex-1">
           <Image
             src={"/cdn-imgs/hero_img_7.jpg"}
@@ -209,7 +207,7 @@ export default function Home() {
       </section>
 
       {/* Browse Section */}
-      <section className="flex flex-col gap-4 md:gap-8 container-x-padding my-4 md:flex-row ">
+      <section className="grid grid-cols-2 md:grid-cols-3  gap-4 md:gap-8 container-x-padding my-4 md:flex-row ">
         {[
           {
             Image: "/cdn-imgs/hero_img_7.jpg",
@@ -228,7 +226,7 @@ export default function Home() {
           }
         ].map((item, index) => (
            <div key={index} className="flex items-center justify-center flex-col flex-1">
-            <div className="relative w-full h-[500px]">
+            <div className="relative w-full h-[300px] md:h-[450px]">
               <Image
                 src={item.Image}
                 alt={"cdn-content-img"}
@@ -259,14 +257,14 @@ export default function Home() {
             alt={"Image-1"}
             width={350}
             height={600}
-            className="border rounded-sm absolute top-3 md:right-[10%]"
+            className="border rounded-sm absolute top-3 right-[10px] md:right-[10%]"
           />
           <Image
-            src={"/cdn-imgs/hero_img_7.jpg"}
+            src={"/cdn-imgs/not-available.png"}
             alt={"Image-1"}
             width={350}
             height={600}
-            className="border rounded-sm absolute  md:left-[10%]"
+            className="border rounded-sm absolute left-[10px]  md:left-[10%]"
           />
         </div>
         <div className="flex-1 space-y-5 text-center">
@@ -282,7 +280,7 @@ export default function Home() {
       </section>
 
       {/* Product characteristics section */}
-      <section className="container-x-padding flex items-center justify-evenly font-secondary text-xl font-bold tracking-wide uppercase select-none text-primary">
+      <section className="container-x-padding grid grid-cols-2 md:grid-cols-4 gap-5 font-secondary text-xl font-bold tracking-wide uppercase select-none text-primary">
         <div className="flex flex-col gap-3 items-center">
           <CloudyIcon className="size-10"/>
           <p>Softer</p>
@@ -336,7 +334,7 @@ export default function Home() {
                     </FormItem>
                   )}
                 />
-                <CustomButton>
+                <CustomButton className="h-9">
                   Subscribe Now
                 </CustomButton>
               </form>
