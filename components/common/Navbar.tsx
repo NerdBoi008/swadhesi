@@ -1,6 +1,6 @@
 'use client'
 
-import { EllipsisVerticalIcon, LogOutIcon, MailIcon, MenuIcon, PhoneIcon, SearchIcon, ShoppingBagIcon, UserRoundIcon } from 'lucide-react'
+import { EllipsisVerticalIcon, LogOutIcon, MailIcon, MenuIcon, PhoneIcon, SearchIcon, Settings2Icon, ShoppingBagIcon, UserRoundIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -370,7 +370,12 @@ const Navbar = () => {
 
               <DropdownMenuItem className='cursor-pointer' onClick={() => {router.push('/login')}}>
                 <LogOutIcon/>
-                Log-In/Out
+                Log-In
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem className='cursor-pointer' onClick={() => { router.push('/login') }}>
+                <Settings2Icon/>
+                Settings
               </DropdownMenuItem>
 
             </DropdownMenuContent>

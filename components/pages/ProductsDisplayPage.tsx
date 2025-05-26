@@ -32,6 +32,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface ProductsDisplayPageProps {
     pageHeading: PageRoutes;
@@ -169,18 +176,15 @@ const ProductsDisplayPage = ({
     if (stockStatus === 'inStock') {
       currentFiltered = currentFiltered.filter(p => typeof p.stock === 'number' && p.stock > 0);
     } else if (stockStatus === 'outOfStock') {
-      currentFiltered = currentFiltered.filter(p => typeof p.stock === 'number' && p.stock < 0);
+      currentFiltered = currentFiltered.filter(p => typeof p.stock === 'number' && p.stock <= 0);
     }
 
     setFilteredProducts(currentFiltered); // Update the final display list
     
   }, [originalProducts, selectedSizes, minPrice, maxPrice, stockStatus]);
-  
 
   return (
     <main className='flex-1 pt-8 container-x-padding space-y-5'>
-
-      <h1 className='text-center text-4xl font-bold font-secondary'>{pageHeadings[pageHeading]}</h1>
       
       <Breadcrumb>
         <BreadcrumbList>
@@ -193,6 +197,8 @@ const ProductsDisplayPage = ({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
+      <h1 className='text-center text-5xl font-secondary'>{pageHeadings[pageHeading]}</h1>
 
       {/* Main section */}
       <section className='flex gap-5'>
@@ -311,28 +317,47 @@ const ProductsDisplayPage = ({
                   </AccordionItem>
                 </Accordion>
                 <SheetFooter>
-                <Button
+                  <Button
                     variant={'default'} size={'sm'}
                     className='cursor-pointer'
                     onClick={() => {
                       handleClearFilters();
                       setIsSheetOpen(!isSheetOpen);
                     }}
-                >
-                  Clear All
-                </Button>
+                  >
+                    Clear All
+                  </Button>
                 </SheetFooter>
               </SheetContent>
             </Sheet>
 
-            
-            <p className='text-sm font-semibold'>{filteredProducts ?  filteredProducts.length : 0} Products</p>
+            <div className='flex gap-3 items-center'>
+              <div className='flex gap-3 items-center'>
+                <span className='text-sm font-semibold'>Sort By :</span>
+                <Select defaultValue='featured'>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Sort By" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="featured">Featured</SelectItem>
+                    <SelectItem value="name-a-z">Name [A-Z]</SelectItem>
+                    <SelectItem value="name-z-a">Name [Z-A]</SelectItem>
+                    <SelectItem value="price-h-l">Price [High-Low]</SelectItem>
+                    <SelectItem value="price-l-h">Price [Low-High]</SelectItem>
+                    <SelectItem value="date-o-n">Date [Old-New]</SelectItem>
+                    <SelectItem value="date-n-o">Date [New-Old]</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div> 
+              <span className='text-muted-foreground'>|</span>
+              <p className='text-sm font-semibold'>{filteredProducts ? filteredProducts.length : 0} Products</p>
+            </div>
           </header>
 
           {/* Products grid */}
           <div className='grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center gap-y-6 gap-x-3'>
             {filteredProducts ? (
-              filteredProducts.map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category, recommendedProducts}: Product) => (
+              filteredProducts.map(({ id, name, price, discount, stock, sizes, thumbnailImage, otherImages, description, category, recommendedProducts }: Product) => (
                 <ProductCard
                   key={id}
                   className="w-full"
@@ -351,7 +376,7 @@ const ProductsDisplayPage = ({
               ))
             ) : (
               Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="border-2 h-44 lg:h-60 2xl:h-96 animate-pulse bg-gray-100 w-full m-8"/>
+                <div key={index} className="border-2 h-44 lg:h-60 2xl:h-96 animate-pulse bg-gray-100 w-full m-8" />
               ))
             )}
           </div>
